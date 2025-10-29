@@ -6,9 +6,10 @@ function showMessage() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var btn = document.getElementById("show-btn")
+  var btn = document.getElementById("show-btn");
   if (btn) {
-    btn.addEventListener("click", showMessage)
+    btn.addEventListener("click", showMessage);
   }
 });
+
 
