@@ -1,0 +1,12 @@
+{
+  "name": "santos-quizmod12",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --ext .js",
+    "build": "echo \"No build step for static site\""
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0"
+  }
+}
