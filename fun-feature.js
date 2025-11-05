@@ -26,7 +26,6 @@
 
   function pickPalette() {
     const p = PALETTES[Math.floor(Math.random() * PALETTES.length)];
-    // pick a background gradient and primary accent
     const bg = `linear-gradient(180deg, ${p.bg[0]}, ${p.bg[1]})`;
     const accent = p.accent[0];
     return { bg, accent };
@@ -90,7 +89,6 @@
     root.style.setProperty("--celebration-bg", palette.bg);
     root.style.setProperty("--celebration-accent", palette.accent);
 
-    // Apply an immediate full-page background via a flash div so body layout isn't broken
     const flash = createEl("div", {
       class: "celebration-theme-flash",
       id: "celebration-flash",
@@ -98,14 +96,11 @@
     flash.style.background = palette.bg;
     flash.style.opacity = "0";
     flash.style.transition = "opacity 450ms ease";
-    // force paint
     void flash.offsetWidth;
     flash.style.opacity = "1";
 
     setTimeout(() => {
-      // commit to body background
       document.body.style.background = palette.bg;
-      // remove/fade flash
       flash.style.opacity = "0";
       setTimeout(() => {
         if (flash.parentElement) flash.parentElement.removeChild(flash);
@@ -130,24 +125,22 @@
       const el = createEl("div", { class: "confetti-piece" });
       const color = colors[Math.floor(Math.random() * colors.length)];
       el.style.background = color;
-      // random start position near origin
       const x = w * originX + (Math.random() - 0.5) * 80;
       const y = Math.random() * (h * 0.2);
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
-      // random rotation
       el.style.transform = `rotate(${Math.random() * 360}deg)`;
       document.body.appendChild(el);
       pieces.push(el);
 
-      // animate with JS using velocities
       const vx = (Math.random() - 0.5) * spread * 0.6;
       const vy = 200 + Math.random() * 500;
       const angular = (Math.random() - 0.5) * 600;
       const lifetime = 2000 + Math.random() * 1800;
       const start = performance.now();
 
-      function frame(now) {
+      // ✅ fixed arrow function
+      const frame = (now) => {
         const t = now - start;
         if (t > lifetime) {
           el.style.opacity = "0";
@@ -156,14 +149,13 @@
           }, 400);
           return;
         }
-        // simple physics
         const px = x + vx * (t / 1000);
-        const py = y + vy * (t / 1000) - 0.5 * 800 * Math.pow(t / 1000, 2); // gravity-ish
+        const py = y + vy * (t / 1000) - 0.5 * 800 * Math.pow(t / 1000, 2);
         el.style.transform = `translate(${px - x}px, ${py - y}px) rotate(${
           angular * (t / 1000)
         }deg)`;
         requestAnimationFrame(frame);
-      }
+      };
       requestAnimationFrame(frame);
     }
     return pieces;
@@ -187,9 +179,10 @@
 
       const life = 2400 + Math.random() * 1600;
       const drift = (Math.random() - 0.5) * 120;
-
       const start = performance.now() + delay;
-      function frame(now) {
+
+      // ✅ fixed arrow function
+      const frame = (now) => {
         const t = now - start;
         if (t < 0) {
           requestAnimationFrame(frame);
@@ -202,14 +195,13 @@
           }, 400);
           return;
         }
-        // progress 0..1
         const p = t / life;
         const px = startX + drift * p;
-        const py = -30 + (h + 60) * p; // move up
+        const py = -30 + (h + 60) * p;
         el.style.transform = `translate(${px - startX}px, -${py}px)`;
         el.style.opacity = `${0.8 - p * 0.8}`;
         requestAnimationFrame(frame);
-      }
+      };
       requestAnimationFrame(frame);
     }
     return created;
@@ -222,7 +214,6 @@
   } = {}) {
     ensureStyles();
     return new Promise((resolve) => {
-      // overlay
       const overlay = createEl("div", {
         class: "celebration-overlay",
         id: overlayId,
@@ -236,7 +227,6 @@
 
       function showNumber(n) {
         countEl.textContent = n > 0 ? n : "Go!";
-        // small scale pop animation via transform (inline)
         countEl.style.transform = "scale(0.8)";
         countEl.style.transition =
           "transform 220ms cubic-bezier(.2,.9,.3,1), opacity 120ms";
@@ -252,7 +242,6 @@
         }
         if (current < 0) {
           clearInterval(interval);
-          // remove overlay after brief pause
           setTimeout(() => {
             if (overlay.parentElement)
               overlay.parentElement.removeChild(overlay);
@@ -269,8 +258,6 @@
     const palette = pickPalette();
     await startCountdown({ from: countdownFrom });
     applyTheme(palette);
-    // launch visuals
-    // origin near center
     const originX = 0.5;
     launchConfetti({ count: 90, originX });
     floatEmojis({ count: 16 });
@@ -281,13 +268,11 @@
     ensureStyles();
     let btn = document.getElementById(buttonId);
     if (!btn) {
-      // create a small fixed button at bottom-right
       btn = createEl("button", {
         id: buttonId,
         class: "btn celebration-trigger",
         text: "Start Celebration",
       });
-      // minimal inline style so it's visible without CSS edits
       btn.style.position = "fixed";
       btn.style.right = "18px";
       btn.style.bottom = "18px";
@@ -318,7 +303,6 @@
     module.exports = api;
   } else {
     global.Celebration = api;
-    // auto-init once DOM loaded
     document.addEventListener("DOMContentLoaded", () => {
       initCelebration("start-celebration-btn");
     });
