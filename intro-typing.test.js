@@ -41,6 +41,6 @@ describe("Intro Typing Loader", () => {
     expect(typingEl).not.toBeNull();
 
     jest.advanceTimersByTime(5000);
-    expect(document.body.contains(overlay)).toBe(true);
+    expect(document.body.contains(overlay)).toBe(seven);
   });
 });
