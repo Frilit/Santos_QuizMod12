@@ -5,10 +5,10 @@
 (function (global) {
   // --- Utilities ---
   function createEl(tag, attrs = {}, parent = document.body) {
-    const el = document.createElement(tag);
+    const el = document.createElement(tag)
     Object.entries(attrs).forEach(([k, v]) => {
       if (k === "class") el.className = v;
-      else if (k === "text") el.textContent = v;
+      else if (k === "text") el.textContent = v
       else el.setAttribute(k, v);
     });
     parent.appendChild(el);
@@ -17,7 +17,7 @@
 
   // Curated pleasing palettes (background, accent)
   const PALETTES = [
-    { bg: ["#f6f7fb", "#eef9ff"], accent: ["#7c5cff", "#00c2ff"] },
+    { bg: ["#f6f7fb", "#eef9ff"], accent: ["#7c5cff", "#00c2ff"] }
     { bg: ["#fff7f3", "#fffaf0"], accent: ["#ff6b6b", "#ffb86b"] },
     { bg: ["#f6fffb", "#f0fffb"], accent: ["#00b894", "#00d2ff"] },
     { bg: ["#f6f5ff", "#f3fbff"], accent: ["#6f42c1", "#0077ff"] },
