@@ -7,13 +7,15 @@
     "test": "jest --runInBand --detectOpenHandles",
     "build": "echo \"No build step for static site\""
   },
-  "devDependencies": {
-    "eslint": "^8.50.0",
-    "jest": "^29.6.1",
-    "jsdom": "^22.1.0"
-  },
+ "devDependencies": {
+  "eslint": "^8.50.0",
+  "jest": "^29.6.1",
+  "jest-environment-jsdom": "^29.6.1",
+  "jsdom": "^22.1.0"
+ },
   "jest": {
     "testEnvironment": "jsdom",
     "setupFilesAfterEnv": []
   }
 }
+
