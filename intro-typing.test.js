@@ -33,6 +33,8 @@ describe("Intro Typing Loader", () => {
 
   test("createIntroLoader adds overlay and types text", async () => {
     createIntroLoader();
+
+    const overlay = document.getElementById("intro-overlay");
     expect(overlay).not.toBeNull();
 
     const typingEl = document.getElementById("typing-text");
