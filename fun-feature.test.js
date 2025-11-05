@@ -19,7 +19,7 @@ describe("Celebration feature (DOM-based)", () => {
 
   test("applyTheme sets background style safely", () => {
     applyTheme.mockImplementation(() => {
-      document.body.style.background = "linear-gradient(red, blue)";
+      document.body.style.background = "linear-gradient(red, blue)"; 
     });
 
     applyTheme({ bg: "linear-gradient(red, blue)", accent: "#fff" });
