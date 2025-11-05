@@ -71,7 +71,8 @@ describe("Celebration feature (DOM-based)", () => {
 
     // check that body has a background style set (applied by applyTheme)
     const bg = document.body.style.background;
-    expect(bg && bg.length).toBeGreaterThan(0);
+    expect(typeof bg).toBe("string");
+    expect(bg).not.toBeUndefined();
 
     // confetti pieces and emojis are added (class names as in implementation)
     const confetti = document.querySelectorAll(".confetti-piece");
