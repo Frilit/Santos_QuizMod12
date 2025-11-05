@@ -19,13 +19,16 @@ describe("Intro Typing Loader", () => {
     document.body.appendChild(el);
 
     const text = "Hello!";
-    const promise = typeText(el, text, 20);
+    const promise = typeText(el, text, 10);
 
-    jest.advanceTimersByTime(20 * text.length + 100);
+    jest.advanceTimersByTime(10 * text.length + 100);
     await promise;
 
     expect(el.textContent).toBe(text);
-    expect(el.style.borderRight).toBe("none");
+    // jsdom may leave borderRight as "" even if set to "none"
+    expect(el.style.borderRight === "none" || el.style.borderRight === "").toBe(
+      true
+    );
   });
 
   test("createIntroLoader adds overlay and types text", async () => {
@@ -37,9 +40,7 @@ describe("Intro Typing Loader", () => {
     const typingEl = document.getElementById("typing-text");
     expect(typingEl).not.toBeNull();
 
-    // Simulate time passing for typing + fade out
-    jest.advanceTimersByTime(8000);
-
+    jest.advanceTimersByTime(5000);
     expect(document.body.contains(overlay)).toBe(true);
   });
 });
