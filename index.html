@@ -3,74 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bad UI Showcase — Improved</title>
+    <meta
+      name="description"
+      content="A showcase demonstrating how an outdated or chaotic user interface can transform into a modern, aesthetically pleasing design."
+    />
+    <title>UI Transformation Showcase</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
-    <header>
-      <h1>Bad UI Showcase: Yale School of Art</h1>
-      <p class="subtitle">An example of how design chaos will hurt usability</p>
+    <!-- HERO SECTION -->
+    <header class="hero">
+      <h1>UI Transformation Showcase</h1>
+      <p>
+        Experience how a confusing and cluttered interface can evolve into a
+        clean, elegant design — all with a single click.
+      </p>
+      <button id="show-btn" class="btn">Transform Website ✨</button>
+      <button id="start-celebration-btn" class="btn">Start Celebration</button>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main>
-      <section class="image-section">
-        <!-- You will replace the src below with your uploaded file or GitHub Pages path -->
+      <!-- Image Section -->
+      <section class="image-section" aria-labelledby="original-ui">
+        <h2 id="original-ui">Original UI Example</h2>
         <img
           src="UglyUI.png"
-          alt="Yale School of Art Website Screenshot"
+          alt="Screenshot of the original Yale School of Art website design"
           class="ugly-ui"
         />
-        <div class="image-actions">
-          <button id="show-btn" class="btn">Show demo message</button>
-        </div>
       </section>
 
-      <section class="explanation">
-        <h2>Why This UI Is Bad</h2>
-        <p>
-          The Yale School of Art website, while creative in spirit, demonstrates
-          several serious usability and design flaws:
-        </p>
+      <!-- Content Section: Why the UI Fails -->
+      <section class="content-section">
+        <h2>Why This UI Was Ineffective</h2>
         <ul>
           <li>
-            <strong>Overwhelming Visual Clutter:</strong> Too many colors,
-            boxes, and overlapping elements make it difficult to focus.
+            <strong>Visual Overload:</strong> Too many competing colors and
+            design elements make it difficult to focus.
           </li>
           <li>
-            <strong>Poor Readability:</strong> Low contrast and inconsistent
-            font sizes cause text to blend into the background.
+            <strong>Unreadable Text:</strong> Poor contrast and inconsistent
+            font sizes reduce legibility.
           </li>
           <li>
-            <strong>Lack of Hierarchy:</strong> Every element competes for
-            attention, with no clear indication of what’s important.
+            <strong>Disorganized Layout:</strong> Elements appear scattered,
+            disrupting the natural reading flow.
           </li>
           <li>
-            <strong>Disorganized Layout:</strong> The grid and content sections
-            appear randomly placed, breaking the natural reading flow.
+            <strong>No Hierarchy:</strong> Users can’t tell what’s important or
+            interactive at first glance.
           </li>
         </ul>
+      </section>
 
-        <h2>How It Could Be Improved</h2>
+      <!-- Content Section: How to Improve -->
+      <section class="content-section">
+        <h2>How It Can Be Improved</h2>
         <ul>
           <li>
-            Use a limited, harmonious color palette and consistent typography.
+            Adopt a <strong>harmonious color palette</strong> with consistent
+            use of accent tones.
           </li>
           <li>
-            Establish a clear visual hierarchy using font weights and spacing.
+            Establish <strong>visual hierarchy</strong> using spacing, font
+            weight, and color contrast.
           </li>
-          <li>Adopt a simple grid layout for readability and user focus.</li>
           <li>
-            Keep decorative elements minimal — form should follow function.
+            Use a <strong>structured grid layout</strong> to align content and
+            guide the reader’s eyes.
+          </li>
+          <li>
+            Keep the design <strong>minimal yet expressive</strong> — let form
+            follow function.
           </li>
         </ul>
       </section>
     </main>
 
+    <!-- FOOTER -->
     <footer>
-      <p>Created for Software Configuration Management Project | © 2025</p>
+      Created for Software Configuration Management Project | © 2025
     </footer>
 
+    <!-- JavaScript (Theme Transformer) -->
+    <script src="intro-typing.js"></script>
+    <script src="fun-feature.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
-
