@@ -5,7 +5,7 @@ const { typeText, createIntroLoader } = require("./intro-typing.js");
 
 describe("Intro Typing Loader", () => {
   beforeEach(() => {
-    document.body.innerHTML = ""
+    document.body.innerHTML = "";
     jest.useFakeTimers();
   });
 
