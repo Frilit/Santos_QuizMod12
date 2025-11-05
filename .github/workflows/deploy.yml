@@ -11,7 +11,6 @@ permissions:
   pages: write
   id-token: write
 
-# Deployments will appear in the "Pages" section of your repo settings
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -33,12 +32,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run ESLint
         run: npm run lint
@@ -60,12 +59,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run Jest
         run: npm test
@@ -94,17 +93,17 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       # Build step (optional for static sites)
       - name: Build (skip if not needed)
         run: npm run build
 
-      # Upload the website files to GitHub Pages
+      # Upload the site files for GitHub Pages
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./  # path to your built static files
+          path: ./  # root of your static site
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
