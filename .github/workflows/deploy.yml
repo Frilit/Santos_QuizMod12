@@ -1,27 +1,41 @@
-name: Lint, Test and Deploy
+name: Lint, Test, and Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
       - master
-  pull_request:
-    branches:
-      - main
-      - master
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Deployments will appear in the "Pages" section of your repo settings
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   lint:
-    name: Lint
+    name: Lint Code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 18
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm ci
@@ -30,22 +44,30 @@ jobs:
         run: npm run lint
 
   test:
-    name: Test (Jest)
+    name: Run Jest Tests
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 18
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: Run Jest
         run: npm test
 
       - name: Upload test results (optional)
@@ -53,18 +75,20 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jest-results
-          path: ./coverage || ./jest-results || ./
+          path: ./jest-results || ./coverage || ./
 
   deploy:
-    name: Deploy
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: [lint, test]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 18
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
@@ -72,9 +96,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (noop)
+      # Build step (optional for static sites)
+      - name: Build (skip if not needed)
         run: npm run build
 
-      - name: Deploy placeholder (replace with real deploy)
-        run: |
-          echo "All checks passed. Replace this step with your deploy - e.g., GitHub Pages or upload to CDN."
+      # Upload the website files to GitHub Pages
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./  # path to your built static files
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
