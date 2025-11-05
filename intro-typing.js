@@ -1,47 +1,76 @@
-/**
- * @jest-environment jsdom
- */
-const { typeText, createIntroLoader } = require("./intro-typing.js");
+// intro-typing.js
+// Typing simulator intro loader — shows a typewriter-style welcome before revealing the site.
 
-describe("Intro Typing Loader", () => {
-  beforeEach(() => {
-    document.body.innerHTML = "";
-    jest.useFakeTimers();
-  });
+(function () {
+  // Typing simulator function
+  function typeText(element, text, speed = 80) {
+    return new Promise((resolve) => {
+      let i = 0;
+      const type = () => {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        } else {
+          element.style.borderRight = "none";
+          resolve();
+        }
+      };
+      type();
+    });
+  }
 
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-  });
+  // Create overlay with typing animation
+  function createIntroLoader() {
+    const overlay = document.createElement("div");
+    overlay.id = "intro-overlay";
+    Object.assign(overlay.style, {
+      position: "fixed",
+      inset: "0",
+      background: "linear-gradient(135deg, #004aad, #0078ff)",
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontFamily: "'Poppins', sans-serif",
+      fontSize: "1.5rem",
+      zIndex: "9999",
+      flexDirection: "column",
+      transition: "opacity 0.8s ease",
+    });
 
-  test("typeText types out text character by character", async () => {
-    const el = document.createElement("div");
-    document.body.appendChild(el);
+    const textEl = document.createElement("div");
+    textEl.id = "typing-text";
+    Object.assign(textEl.style, {
+      borderRight: "3px solid rgba(255,255,255,0.7)",
+      padding: "0 4px",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+    });
+    overlay.appendChild(textEl);
+    document.body.appendChild(overlay);
 
-    const text = "Hello!";
-    const promise = typeText(el, text, 20);
+    const message = "Welcome to the UI Transformation Showcase...";
+    typeText(textEl, message, 60).then(() => {
+      setTimeout(() => {
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+          if (overlay.parentElement) overlay.remove();
+        }, 800);
+      }, 1000);
+    });
+  }
 
-    jest.advanceTimersByTime(20 * text.length + 100);
-    await promise;
+  // Auto-run on DOM load in browser
+  if (typeof window !== "undefined") {
+    document.addEventListener("DOMContentLoaded", createIntroLoader);
+  }
 
-    expect(el.textContent).toBe(text);
-    expect(el.style.borderRight === "none" || el.style.borderRight === "").toBe(
-      true
-    );
-  });
-
-  test("createIntroLoader adds overlay and types text", async () => {
-    createIntroLoader();
-
-    const overlay = document.getElementById("intro-overlay");
-    expect(overlay).not.toBeNull();
-
-    const typingEl = document.getElementById("typing-text");
-    expect(typingEl).not.toBeNull();
-
-    // Simulate time passing for typing + fade out
-    jest.advanceTimersByTime(8000);
-
-    expect(document.body.contains(overlay)).toBe(true);
-  });
-});
+  // Export for Jest testing
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = { typeText, createIntroLoader };
+  } else {
+    window.typeText = typeText;
+    window.createIntroLoader = createIntroLoader;
+  }
+})();
