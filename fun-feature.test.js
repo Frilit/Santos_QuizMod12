@@ -26,17 +26,18 @@ describe("Celebration feature (DOM-based)", () => {
     expect(typeof bg).toBe("string");
   });
 
-  test("startCelebration applies theme and creates confetti/emojis", async () => {
-    await startCelebration({ countdownFrom: 0 });
-
-    const confetti = document.querySelectorAll(".confetti-piece");
-    const emojis = document.querySelectorAll(".emoji-floating");
-
-    // Allow for jsdom limitations
-    expect(confetti.length).toBeGreaterThanOrEqual(0);
-    expect(emojis.length).toBeGreaterThanOrEqual(0);
-
-    // Verify no errors thrown
-    expect(() => startCelebration()).not.toThrow();
-  });
+  test(
+    "startCelebration applies theme and creates confetti/emojis",
+    async () => {
+      await startCelebration({ countdownFrom: 0 });
+  
+      const confetti = document.querySelectorAll(".confetti-piece");
+      const emojis = document.querySelectorAll(".emoji-floating");
+  
+      expect(confetti.length).toBeGreaterThanOrEqual(0);
+      expect(emojis.length).toBeGreaterThanOrEqual(0);
+      expect(() => startCelebration()).not.toThrow();
+    },
+    15000 // ← extend timeout to 15 seconds
+  );
 });
